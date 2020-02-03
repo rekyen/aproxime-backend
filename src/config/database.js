@@ -1,6 +1,6 @@
 module.exports = {
   // docs.sequelizejs.com - dialects
-  dialects: 'postgres',
+  dialect: 'postgres',
   host: 'localhost',
   username: 'postgres',
   password: 'aproximepw',
