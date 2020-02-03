@@ -9,6 +9,7 @@ class User extends Model {
         email: Sequelize.STRING,
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
+        is_admin: Sequelize.BOOLEAN,
       },
       {
         sequelize,
@@ -18,6 +19,12 @@ class User extends Model {
     this.addHook('beforeSave', async user => {
       if (user.password) {
         user.password_hash = await bcrypt.hash(user.password, 8);
+      }
+    });
+
+    this.addHook('beforeCreate', async user => {
+      if (user.is_admin) {
+        user.is_admin = false;
       }
     });
 

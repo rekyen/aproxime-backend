@@ -3,6 +3,42 @@ import * as Yup from 'yup';
 import User from '../models/User';
 
 class UserController {
+  async index(req, res) {
+    const { page = 1 } = req.query;
+    const pageSize = 5;
+
+    const user = await User.findOne({
+      where: {
+        id: req.userId,
+        is_admin: true,
+      },
+    });
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ error: 'User is not allowed to do this action.' });
+    }
+
+    const users = await User.findAll({
+      attributes: ['id', 'name', 'email'],
+      order: ['id'],
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+    });
+
+    const totalItens = await User.count();
+    const totalPages = Math.ceil(totalItens / pageSize);
+    const pagedList = {
+      data: users,
+      total_itens: totalItens,
+      total_pages: totalPages,
+      current_page: Number(page),
+    };
+
+    return res.json(pagedList);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
@@ -12,6 +48,7 @@ class UserController {
       password: Yup.string()
         .required()
         .min(6),
+      is_admin: Yup.boolean(),
     });
 
     if (!(await schema.isValid(req.body))) {
