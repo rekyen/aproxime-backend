@@ -4,9 +4,11 @@ import AuthMiddleware from './app/middleware/auth';
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import PostController from './app/controllers/PostController';
+import SearchController from './app/controllers/SearchController';
 
 const routes = new Router();
 
+routes.get('/search', SearchController.index);
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 

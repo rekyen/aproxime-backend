@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import PointSchema from './utils/PointSchema';
 
 const PostSchema = new mongoose.Schema(
   {
@@ -25,6 +26,10 @@ const PostSchema = new mongoose.Schema(
     deletedAt: {
       type: Date,
       required: false,
+    },
+    location: {
+      type: PointSchema,
+      index: '2dsphere',
     },
   },
   {

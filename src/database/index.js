@@ -23,7 +23,12 @@ class Database {
   mongo() {
     this.mongoConnection = mongoose.connect(
       'mongodb://localhost:27018/aproxime',
-      { useNewUrlParser: true, useFindAndModify: true }
+      {
+        useNewUrlParser: true,
+        useFindAndModify: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+      }
     );
   }
 }

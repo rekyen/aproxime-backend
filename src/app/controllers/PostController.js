@@ -34,7 +34,19 @@ class PostController {
       return res.status(401).json({ error: 'User not found.' });
     }
 
-    const post = { ...req.body, user: req.userId };
+    const location = {
+      type: 'Point',
+      coordinates: [req.body.longitude, req.body.latitude],
+    };
+
+    const { title, content } = req.body;
+
+    const post = {
+      user: req.userId,
+      title,
+      content,
+      location,
+    };
 
     const result = await Post.create(post);
 
